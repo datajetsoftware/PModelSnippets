@@ -14,6 +14,12 @@ outputfile = sys.argv[2]
 
 NCLUSTERS = 5
 
+#sys.stderr.write(str(len(sys.argv)))
+#exit()
+
+if len(sys.argv)==4:
+    NCLUSTERS = int(sys.argv[3]);    
+
 
 #read input file into array
 iFile = open(inputfile, 'r',encoding='utf8') 
