@@ -137,7 +137,7 @@ dataModel["hasTotalColumn"]=False
 dataModel["hasNullRow"]=False
 dataModel["hasNullColumn"]=False
 
-
+dataModel["suggestedChart"]="line"
 
 
 #dataModel["grid"] = grid    

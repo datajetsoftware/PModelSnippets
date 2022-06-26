@@ -135,7 +135,7 @@ associatedData["inertia"] = kmeans.inertia_
 
 #dataModel["grid"] = grid    
 
-
+dataModel["suggestedChart"]="scatter"
 
 output = json.dumps(dataModel)
 
