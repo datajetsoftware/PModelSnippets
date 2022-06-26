@@ -1,0 +1,3 @@
+KMeans Clustering - Elbow Chart
+
+Calculates the total error in the output against the number of clusters
