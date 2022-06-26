@@ -28,6 +28,9 @@ iFile.close()
 
 
 dataModel = json.loads(data)
+associatedData = dataModel["associatedData"]
+
+associatedData["clusters"] = NCLUSTERS
 
 grid = dataModel["grid"]
 
@@ -37,56 +40,46 @@ grid = dataModel["grid"]
 headerInfo = dataModel["headerInfo"]
 nColumns = len(headerInfo);
 
+
+
 if dataModel["hasTotalColumn"]:
     nColumns = nColumns-1
 
 
+
 clusteringSource = []
 
-for column in range(0,nColumns):
+
+rows = dataModel["rows"]
+hasTotalRow = dataModel["hasTotalRow"]
+if hasTotalRow:
+    rows= rows-1
+
+for x in range(0,rows):
 
     thisData = []
-
-    headerType = headerInfo[column]["type"]
     
-    if headerType=="label":
-        continue
+    for c in range(0,nColumns):
 
-    counts = grid[column]
 
+        headerType = headerInfo[c]["type"]
     
+        if headerType=="label":
+            continue
 
-
-    rows = len(counts)
-
-    hasTotalRow = dataModel["hasTotalRow"]
-    if hasTotalRow:
-        rows= rows-1
-
-    counts = grid[column]
-
-    rows = len(counts)
-
+        counts = grid[c]
         
-    for x in range(0,rows):
         val = float(counts[x])
         thisData.append(val)
         
     clusteringSource.append(thisData)
             
-    if hasTotalRow:
-        counts[rows-1]=""
+    
 
+dataframe = pd.DataFrame(clusteringSource)    
 
-
-dataframe = []
-
-for r in range(0,len(clusteringSource[0])):
-    row=[]
-    for c in range(0,1):
-        row.append(clusteringSource[c][r])
-        
-    dataframe.append(row)
+associatedData["DataRows"]=len(clusteringSource)
+associatedData["DataColumns"]=len(clusteringSource[0])
  
 
 kmeans = KMeans(n_clusters=NCLUSTERS)
@@ -130,10 +123,10 @@ grid.append(sdf3)
 #cluster_centres_1 = kmeans.cluster_centers_[:, 1]
 
 
-associatedData = dataModel["associatedData"]
 
 
-associatedData["clusters"] = NCLUSTERS
+
+
 
 associatedData["cluster_centers"] = kmeans.cluster_centers_.tolist()
 
