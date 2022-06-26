@@ -130,6 +130,8 @@ grid.append(sdf3)
 
 associatedData["cluster_centers"] = kmeans.cluster_centers_.tolist()
 
+associatedData["inertia"] = kmeans.inertia_
+
 
 #dataModel["grid"] = grid    
 
