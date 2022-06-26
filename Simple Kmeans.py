@@ -135,12 +135,12 @@ associatedData = dataModel["associatedData"]
 
 associatedData["clusters"] = NCLUSTERS
 
+associatedData["cluster_centers"] = kmeans.cluster_centers_.tolist()
+
+
 #dataModel["grid"] = grid    
 
 
-#print(len(clusteringSource))
-#print(len(clusteringSource[0]))
-#print(len(clusteringSource[1]))
 
 output = json.dumps(dataModel)
 
