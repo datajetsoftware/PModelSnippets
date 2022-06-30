@@ -62,9 +62,12 @@ for c in range(0,nColumns):
     counts = grid[c]
 
     for x in range(0,rows):
-
-        val = float(counts[x])
-        thisData.append(val)
+        if counts[x] != "null":
+            val = float(counts[x])
+            thisData.append(val)
+        else:
+            thisData.append(0)  #nan
+            
         
     clusteringSource.append(thisData)
             
