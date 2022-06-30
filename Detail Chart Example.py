@@ -79,6 +79,27 @@ associatedData["a-chart5"]=subChart5
 associatedData["some-json"] = subChart4["values"]
 
 
+
+subChart6 = json.loads("{}")
+subChart6["objectType"]="chart"
+subChart6["name"]="xy scatter graph"
+subChart6["chartType"]="xyscatter"
+subChart6["x"]=[50,25,60,110,10,30]
+subChart6["y"]=[100,50,125,200,25,75]
+associatedData["a-chart6"]=subChart6
+
+
+subChart7 = json.loads("{}")
+subChart7["objectType"]="chart"
+subChart7["name"]="xy scatter graph with z line"
+subChart7["chartType"]="xyscatterxzline"
+subChart7["x"]=[50,25,60,110,10,30]
+subChart7["y"]=[100,50,125,200,25,75]
+subChart7["z"]=[100,50,120,220,20,60]
+associatedData["a-chart7"]=subChart7
+
+
+
 output = json.dumps(dataModel)
 
 oFile = open(outputfile, 'w',encoding='utf8') #write to file
