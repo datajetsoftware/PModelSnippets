@@ -63,6 +63,15 @@ subChart4["values"]=  json.loads('{"axes":[{"values":[10,250,25,100,125,5],"axis
 associatedData["a-chart4"]=subChart4
 
 
+subChart5 = json.loads("{}")
+subChart5["objectType"]="chart"
+subChart5["name"]="pie chart"
+subChart5["chartType"]="pie"
+subChart5["categories"]=["A","B","C","D","E","F"]
+subChart5["values"]=[100,50,125,200,25,75]
+associatedData["a-chart5"]=subChart5
+
+
 output = json.dumps(dataModel)
 
 oFile = open(outputfile, 'w',encoding='utf8') #write to file
