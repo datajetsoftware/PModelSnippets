@@ -24,7 +24,12 @@ dataModel = json.loads(data)
 associatedData = dataModel["associatedData"]
 
 
-associatedData["info"]="some info"
+associatedData["text info"]="short text"
+associatedData["number info"]=100.23
+associatedData["small array"]=[1,2,3,4,5]
+associatedData["small 2darray"]=[[1,2],[2,3],[3,3],[4,5],[5,6]]
+
+associatedData["big text"]="This is a much larger text entry\r\ncontaining carriage returns and line feeds\r\nmore than one containing carriage return and line feed to be precise. it also wraps sentences"
 
 dataModel["suggestedChart"] = "XYXZScatter"
 
@@ -70,6 +75,8 @@ subChart5["chartType"]="pie"
 subChart5["categories"]=["A","B","C","D","E","F"]
 subChart5["values"]=[100,50,125,200,25,75]
 associatedData["a-chart5"]=subChart5
+
+associatedData["some-json"] = subChart4["values"]
 
 
 output = json.dumps(dataModel)
