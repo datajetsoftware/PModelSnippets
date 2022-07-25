@@ -98,6 +98,13 @@ subChart7["y"]=[100,50,125,200,25,75]
 subChart7["z"]=[100,50,120,220,20,60]
 associatedData["a-chart7"]=subChart7
 
+adgrid = json.loads("{\"objectType\": \"grid\"}")
+adgrid["name"] = "rotation"
+adgrid["tag"] = "PCA-GRID"
+adgrid["headers"] = ["Dimension","PC1","PC2"]
+adgrid["data"] = [["age","income"],["0.5","-0.4"],["0.4","0.1"]]
+
+associatedData["pca"]=adgrid
 
 
 output = json.dumps(dataModel)
