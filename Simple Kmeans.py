@@ -18,8 +18,8 @@ NCLUSTERS = 5
 #exit()
 
 if len(sys.argv)==4:
-    NCLUSTERS = int(sys.argv[3]);    
-
+    if sys.argv[3] != "":
+        NCLUSTERS = int(sys.argv[3]);   
 
 #read input file into array
 iFile = open(inputfile, 'r',encoding='utf8') 
