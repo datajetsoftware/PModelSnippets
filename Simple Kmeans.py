@@ -125,10 +125,48 @@ grid.append(sdf3)
 
 
 
+cclist = kmeans.cluster_centers_.tolist()
+
+
+#associatedData["cluster_centers"] = cclist
+
+
+#put cluster_centers in grid mode
+
+ccjson = json.loads('{"objectType" : "grid"}')
+ccjson["name"] = "Cluster Centers"
 
 
 
-associatedData["cluster_centers"] = kmeans.cluster_centers_.tolist()
+#print( len(cclist))
+#print( len(cclist[0]))
+
+ccdata = []
+ccheaders = []
+ccdataTypes = []
+
+#the cluster column header and data
+ccheaders.append("Cluster")
+ccdataTypes.append("integer")
+ccdata.append(list(range(1, len(cclist)+1)))   
+
+
+for x in range(0,len(cclist[0])):
+    ccrow = []
+    ccheaders.append(headerInfo[x+1]["name"])
+    ccdataTypes.append("double")
+    for y in range(0,len(cclist)):
+        ccrow.append(cclist[y][x])    
+    ccdata.append(ccrow)   
+
+ccjson["data"]  = ccdata
+ccjson["headers"] = ccheaders
+ccjson["dataTypes"] = ccdataTypes
+
+
+associatedData["ccgrid"]=ccjson
+
+
 associatedData["plottableCentroids"] = kmeans.cluster_centers_.tolist()
 
 associatedData["inertia"] = kmeans.inertia_
