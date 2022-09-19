@@ -133,7 +133,7 @@ cclist = kmeans.cluster_centers_.tolist()
 
 #put cluster_centers in grid mode
 
-ccjson = json.loads('{"objectType" : "grid"}')
+ccjson = json.loads('{"objectType" : "grid", "tag" : "CLUSTER_GRID"}')
 ccjson["name"] = "Cluster Centers"
 
 
