@@ -4,5 +4,5 @@ requires at least 2 measures.
 	
 Pass the number of clusters requires (default 3)
 
-Cluster is appended as a columns and 
+Cluster is appended as a column and 
 detail will contain cluster centroids
