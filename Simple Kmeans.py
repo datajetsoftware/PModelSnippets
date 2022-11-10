@@ -35,146 +35,157 @@ associatedData["clusters"] = NCLUSTERS
 grid = dataModel["grid"]
 
 
+
+isMeasure = ("measureEntries" in dataModel)
+
 #create a data frame 
 
 headerInfo = dataModel["headerInfo"]
-nColumns = len(headerInfo);
 
 
 
-if dataModel["hasTotalColumn"]:
-    nColumns = nColumns-1
+
+#sys.stderr.write("measureEntries: "+str(len(measureEntries))+"\r\n")
+#sys.stderr.write("fieldEntries: "+str(len(fieldEntries))+"\r\n")
+#exit()
 
 
-
-clusteringSource = []
-
-
-rows = dataModel["rows"]
-hasTotalRow = dataModel["hasTotalRow"]
-if hasTotalRow:
-    rows= rows-1
-
-for x in range(0,rows):
-
-    thisData = []
+if isMeasure:
     
-    for c in range(0,nColumns):
-
-
-        headerType = headerInfo[c]["type"]
+    measureEntries = dataModel["measureEntries"]
+    nMeasures = len(measureEntries)
     
-        if headerType=="label":
-            continue
+    fieldEntries = dataModel["fieldEntries"]
+    nFields = len(fieldEntries)
+    
+    if nMeasures < 2:
+        sys.stderr.write("at least 2 measures required\r\n")
+        exit()
+    
+    if nFields != 1:
+        sys.stderr.write("only 1 dimension supported\r\n")
+        exit()
 
-        counts = grid[c]
+    nColumns = len(headerInfo);
+
+
+    if dataModel["hasTotalColumn"]:
+        nColumns = nColumns-1
+
+
+
+    clusteringSource = []
+
+
+    rows = dataModel["rows"]
+    hasTotalRow = dataModel["hasTotalRow"]
+    if hasTotalRow:
+        rows= rows-1
+
+    for x in range(0,rows):
+
+        thisData = []
         
-        val = float(counts[x])
-        thisData.append(val)
+        for c in range(0,nColumns):
+
+
+            headerType = headerInfo[c]["type"]
         
-    clusteringSource.append(thisData)
+            if headerType=="label":
+                continue
+
+            counts = grid[c]
             
-    
+            val = float(counts[x])
+            thisData.append(val)
+            
+        clusteringSource.append(thisData)
+                
+        
 
-dataframe = pd.DataFrame(clusteringSource)    
+    dataframe = pd.DataFrame(clusteringSource)    
 
-associatedData["DataRows"]=len(clusteringSource)
-associatedData["DataColumns"]=len(clusteringSource[0])
- 
+    associatedData["DataRows"]=len(clusteringSource)
+    associatedData["DataColumns"]=len(clusteringSource[0])
+     
 
-kmeans = KMeans(n_clusters=NCLUSTERS)
-kmeans.fit(dataframe)
-labels = kmeans.labels_
-df3 = pd.DataFrame(labels)
+    kmeans = KMeans(n_clusters=NCLUSTERS)
+    kmeans.fit(dataframe)
+    labels = kmeans.labels_
+    df3 = pd.DataFrame(labels)
 
-#add df3 as a new column in results
+    #add df3 as a new column in results
 
-headerCopy = json.loads(json.dumps(headerInfo[1]))
-headerCopy["name"]="Cluster"
-headerCopy["dataType"]="numeric"
-headerCopy["type"]="value"
-headerCopy["fieldType"]="integer"
-headerCopy["axisOverride"]=1
-headerCopy["graphAble"]=True
-headerInfo.append(headerCopy)
+    headerCopy = json.loads(json.dumps(headerInfo[1]))
+    headerCopy["name"]="Cluster"
+    headerCopy["dataType"]="numeric"
+    headerCopy["type"]="value"
+    headerCopy["fieldType"]="integer"
+    headerCopy["axisOverride"]=1
+    headerCopy["graphAble"]=True
+    headerInfo.append(headerCopy)
 
-#dataModel["headerInfo"]=headerInfo;
-
-
-#clusterData = np.array(df3[0].tolist())
-clusterData = df3[0].tolist()
-
-if len(grid[1]) > len(df3):
-    clusterData.append(0)
+    #dataModel["headerInfo"]=headerInfo;
 
 
+    #clusterData = np.array(df3[0].tolist())
+    clusterData = df3[0].tolist()
+
+    if len(grid[1]) > len(df3):
+        clusterData.append(0)
+
+    sdf3 = []
+    for x in range(0,len(clusterData)):
+        sdf3.append(str(clusterData[x]))
+        
+
+    grid.append(sdf3)
 
 
+    #cluster_centres_0 = kmeans.cluster_centers_[:, 0]
+    #cluster_centres_1 = kmeans.cluster_centers_[:, 1]
 
-sdf3 = []
-for x in range(0,len(clusterData)):
-    sdf3.append(str(clusterData[x]))
-    
-
-grid.append(sdf3)
+    cclist = kmeans.cluster_centers_.tolist()
 
 
-#cluster_centres_0 = kmeans.cluster_centers_[:, 0]
-#cluster_centres_1 = kmeans.cluster_centers_[:, 1]
+    #put cluster_centers in grid mode
+
+    ccjson = json.loads('{"objectType" : "grid", "tag" : "CLUSTER_GRID"}')
+    ccjson["name"] = "Cluster Centers"
 
 
+    ccdata = []
+    ccheaders = []
+    ccdataTypes = []
+
+    #the cluster column header and data
+    ccheaders.append("Cluster")
+    ccdataTypes.append("integer")
+    ccdata.append(list(range(1, len(cclist)+1)))   
 
 
-cclist = kmeans.cluster_centers_.tolist()
+    for x in range(0,len(cclist[0])):
+        ccrow = []
+        ccheaders.append(headerInfo[x+1]["name"])
+        ccdataTypes.append("double")
+        for y in range(0,len(cclist)):
+            ccrow.append(cclist[y][x])    
+        ccdata.append(ccrow)   
+
+    ccjson["data"]  = ccdata
+    ccjson["headers"] = ccheaders
+    ccjson["dataTypes"] = ccdataTypes
 
 
-#associatedData["cluster_centers"] = cclist
+    associatedData["ccgrid"]=ccjson
+    associatedData["plottableCentroids"] = kmeans.cluster_centers_.tolist()
+    associatedData["inertia"] = kmeans.inertia_
+    dataModel["suggestedChart"]="scatter"
+else:
+    sys.stderr.write("profile source type not supported\r\n")
+    exit()
 
 
-#put cluster_centers in grid mode
-
-ccjson = json.loads('{"objectType" : "grid", "tag" : "CLUSTER_GRID"}')
-ccjson["name"] = "Cluster Centers"
-
-
-
-#print( len(cclist))
-#print( len(cclist[0]))
-
-ccdata = []
-ccheaders = []
-ccdataTypes = []
-
-#the cluster column header and data
-ccheaders.append("Cluster")
-ccdataTypes.append("integer")
-ccdata.append(list(range(1, len(cclist)+1)))   
-
-
-for x in range(0,len(cclist[0])):
-    ccrow = []
-    ccheaders.append(headerInfo[x+1]["name"])
-    ccdataTypes.append("double")
-    for y in range(0,len(cclist)):
-        ccrow.append(cclist[y][x])    
-    ccdata.append(ccrow)   
-
-ccjson["data"]  = ccdata
-ccjson["headers"] = ccheaders
-ccjson["dataTypes"] = ccdataTypes
-
-
-associatedData["ccgrid"]=ccjson
-
-
-associatedData["plottableCentroids"] = kmeans.cluster_centers_.tolist()
-
-associatedData["inertia"] = kmeans.inertia_
-
-
-#dataModel["grid"] = grid    
-
-dataModel["suggestedChart"]="scatter"
 
 output = json.dumps(dataModel)
 

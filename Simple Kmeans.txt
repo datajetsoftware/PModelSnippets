@@ -1,1 +1,4 @@
-KMeans Clustering
+KMeans Clustering using sklearn
+Input is single dimensional profile multi field profile
+with at least 2 measures.
+	
