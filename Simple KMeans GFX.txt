@@ -1,0 +1,14 @@
+KMeans Clustering using sklearn
+Input is single dimensional, multi measure profile
+requires at least 2 measures.
+	
+Pass the number of clusters requires (default 3)
+
+Cluster is appended as a column and 
+detail will contain cluster centroids
+
+This version uses matplotlib to plot error charts
+that are returned as base64 string for display in DataJet
+
+
+
