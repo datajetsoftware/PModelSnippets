@@ -1,0 +1,40 @@
+{
+  "parameters": [
+    {
+      "name": "TopN",
+      "description": "Number of rows to keep from sorted index list.\r\nDefault = 4\r\ne.g., If N = 4 (the default) the rows with the top 4 values will be kept.   (Note - data sorted by column specfied in SortMode)"
+    },
+    {
+      "name": "SortMode",
+      "description": "Can be Base, Target or Index.  Default = Index"
+    },
+    {
+      "name": "Mode",
+      "description": "Specifies which thresholds (if any) to apply\r\nB = Base\r\nT = Target\r\nI = Index\r\nALL = Base, target and Index\r\nAny combination of BTI is allowed.\r\nDefault = BTI"
+    },
+    {
+      "name": "IndexMin",
+      "description": "Optional. Minimum Index threshold if filtering index values (see Mode for details).\r\nDefault = -1 (no threshold)"
+    },
+    {
+      "name": "IndexMax",
+      "description": "Optional. Maximum Index threshold if filtering index values (see Mode for details).\r\nDefault = -1 (no threshold)"
+    },
+    {
+      "name": "BaseMin",
+      "description": "Optional. Minimum Base threshold if filtering Base values (see Mode for details).\r\nDefault = -1 (no threshold)"
+    },
+    {
+      "name": "BaseMax",
+      "description": "Optional. Maximum Index threshold if filtering Base values (see Mode for details).\r\nDefault = -1 (no threshold)"
+    },
+    {
+      "name": "TargetMin",
+      "description": "Optional. Minimum Target threshold if filtering target values (see Mode for details).\r\nDefault = -1 (no threshold)"
+    },
+    {
+      "name": "TargetMax",
+      "description": "Optional. Minimum Target threshold if filtering target values (see Mode for details).\r\nDefault = -1 (no threshold)"
+    }
+  ]
+}

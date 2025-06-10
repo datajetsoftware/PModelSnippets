@@ -1,0 +1,5 @@
+Applies post-process filter thresholds to a single or multi-dimension Index Profile.
+Sort Mode can be either Index, Base or Target (Index = default)
+Mode can be one or more of Base (B), Target (T) an Index (I), e.g., BTI processes thresholds for all 3 column types. 
+Min and Max thresholds applied if specified. 
+TopN - Number of rows to keep (rows must meet threshold criteria).  Default = 4
